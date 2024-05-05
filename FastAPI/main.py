@@ -11,7 +11,7 @@ app = FastAPI()
 
 # managing cross-origin  resource sharing:
 origins = [
-    'http://localhost:3000'
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
@@ -45,7 +45,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 models.Base.metadata.create_all(bind=engine)
 
 
-@app.post("/transaction/", response_model=TransactionModel)
+@app.post("/transactions/", response_model=TransactionModel)
 async def create_transaction(transaction: TransactionBase, db: db_dependency):
     print('he')
     db_transaction = models.Transaction(**transaction.model_dump())

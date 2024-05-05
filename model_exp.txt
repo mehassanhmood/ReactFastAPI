@@ -1,0 +1,5 @@
+1. from database import Base: 
+    This imports the Base class from the database module. 
+    In SQLAlchemy, Base serves as the base class for all ORM models and provides essential functionality for defining database tables.
+2. Defines a new class named Transaction that inherits from the Base class. 
+    By inheriting from Base, Transaction becomes an ORM model and gains functionality for interacting with the database.

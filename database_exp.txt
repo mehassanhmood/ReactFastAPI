@@ -1,0 +1,39 @@
+1. create_engine :
+    This function is used to create a new database engine instance. 
+    The engine serves as the central interface to the database and manages connections, execution of SQL statements, etc.
+
+2. session_maker:
+    It is a factory function that generates new session classes. Sessions in SQLAlchemy represent a series of operations to be performed within a transaction.
+    Reason for usage: Using sessionmaker, you can configure and create session objects with predefined settings, such as autocommit behavior, isolation levels, and more.
+    This simplifies the process of working with database sessions.
+
+3. declarative_base:
+    A factory function that constructs a base class for declarative class definitions in SQLAlchemy.
+    Declarative base classes are used to define ORM (Object-Relational Mapping) models.
+    
+    ORM models in SQLAlchemy allow you to define database tables as Python classes, mapping each table column to an attribute of the class.
+    declarative_base provides a base class from which all ORM models can inherit, simplifying the creation and management of ORM classes.
+
+4. {"check_same_thread" :False}:
+    In SQLite, each connection is tied to the thread that created it. 
+    By default, SQLite raises an exception if you try to use a connection in a different thread than the one it was created in.
+    Setting "check_same_thread": False disables this check, allowing SQLite connections to be used across multiple threads.
+
+5. SessionLocal:
+
+    a. autocommit=False:
+    Setting autocommit to False means that SQLAlchemy sessions will not automatically commit changes to the database after each operation.
+    Instead, changes will be batched together and committed explicitly using the commit() method. 
+    This allows you to manage transactions manually and ensures that multiple operations are grouped into a single transaction when necessary.
+
+    b. autoflush=False:
+    By default, SQLAlchemy sessions have autoflush enabled, which means that changes made to objects in the session are automatically flushed (i.e., synchronized) to the database before certain operations, such as queries or commits. 
+    Setting autoflush to False disables this behavior, allowing you to control when changes are flushed to the database explicitly using the flush() method. 
+    This can be useful for optimizing performance or managing complex data operations.
+
+
+    c. bind=engine:
+    The bind argument specifies the database engine to which the sessions created by this session factory will be bound. 
+    The engine variable represents a SQLAlchemy engine instance that manages the database connection. 
+    By binding sessions to the engine, SQLAlchemy ensures that database operations performed within the session are executed using the specified database connection.
+    

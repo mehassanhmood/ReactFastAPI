@@ -1,0 +1,52 @@
+1. HTTPException:
+    When you encounter an error condition while processing a request, you can raise an HTTPException with the appropriate status code and message to inform the client about the error. 
+    FastAPI automatically converts this exception into an HTTP response with the specified status code and message.
+2. Depends: 
+    a. `Depends` is a dependency injection system provided by FastAPI.
+    b. Reason for usage: Dependencies are reusable pieces of code that can be injected into your route functions to perform common tasks such as:
+            authentication, data validation, or accessing external resources.
+        By importing Depends, you can define dependencies for your route functions and use them to execute tasks before or after handling requests.
+
+3. Cross-origin resource sharing (CORS):
+    a.  It's a security feature implemented by web browsers to restrict web pages from making requests to a different origin (domain, protocol, or port) than the one from which the page itself was served.
+    b. When a web page hosted on one domain makes an HTTP request to a different domain (cross-origin request), browsers enforce the Same-Origin Policy by default, which blocks the request. 
+        CORS allows servers to relax this restriction selectively by specifying which origins are allowed to access their resources.
+        This mechanism helps prevent certain types of attacks, such as cross-site scripting (XSS) and cross-site request forgery (CSRF), while still allowing legitimate cross-origin interactions.
+
+
+4. get_db function:
+    The provided code defines a function named get_db that is used to obtain a database session object for interacting with the database. 
+    This function is typically used as a dependency in FastAPI route functions to ensure that each route function has access to a database session when needed.
+    The `yield` keyword is used to turn the function into a generator. It allows the function to be called multiple times, with each call potentially producing a value. In this case, the value produced is the database session object db.
+    The `finally` block ensures that the code inside it is executed regardless of whether an exception occurred in the try block.
+
+5. Annotated[Session, Depends(get_db)]:
+    a. Annotated is a special type annotation available in Python 3.9 and later, introduced in PEP 593. 
+        It allows you to attach metadata to a variable or parameter.
+        In this case, it's used to annotate the dependency with additional information.
+    b. Session is the type of the dependency. It specifies the type of object that the dependency provides.
+        In this case, it indicates that the dependency provides a database session object.
+    c. Depends(get_db) specifies that the dependency is resolved by calling the get_db function. 
+        `Depends` is a class provided by FastAPI that represents a dependency. 
+        It's used to declare dependencies in route functions and other parts of the application. 
+        `get_db` is the function that provides the dependency, in this case, a database session.
+    d. So, Annotated[Session, Depends(get_db)] means that db_dependency is a dependency that provides a database session object (Session type) and is resolved by calling the get_db function.
+
+6. @app.post route:
+    a. `response_model=TransactionModel` specifies the model that should be used to serialize the response data. 
+        This means that the response data returned by this route handler function will be validated against the TransactionModel schema before being sent back to the client.
+    b. async def create_transaction(transaction: TransactionBase, db: db_dependency):
+        This line defines the route handler function named `create_transaction`. It takes two parameters:
+
+         -->    `transaction`: This parameter is of type TransactionBase, which likely represents the input data for creating a new transaction. 
+                FastAPI will automatically deserialize the request body into an object of type TransactionBase based on the request payload.
+
+         -->   db: This parameter represents a dependency (db_dependency) that provides a database session object. 
+                The db_dependency dependency ensures that a database session is available within the function for interacting with the database.
+    c. Funtion body:
+        Creates a new instance of the Transaction model (db_transaction) using the input data from the transaction parameter.
+        Adds the newly created transaction to the database session (db) using the add method.
+        Commits the transaction to persist the changes to the database using the commit method.
+        Refreshes the db_transaction object with the latest data from the database using the refresh method. This ensures that the returned object contains any changes made to it during the commit operation.
+        Returns the created transaction object (db_transaction) as the HTTP response. FastAPI will automatically serialize the object into JSON format based on the specified response_model (TransactionModel).
+    
